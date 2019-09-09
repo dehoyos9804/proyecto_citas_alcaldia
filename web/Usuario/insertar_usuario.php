@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         print json_encode(
             array(
                 ESTADO => CODIGO_FALLO,
-                MENSAJE => 'Creación fallida')
+                MENSAJE => $retorno)
         );
     }
 }

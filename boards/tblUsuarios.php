@@ -18,6 +18,7 @@ class tblUsuarios
     const DIRECCION = "direccion";
     const CORREO = "correo";
     const CLAVE = "clave";
+    const COD_FUNCIONARIO = 'codfuncionario'; 
 
     function __construct()
     {
@@ -33,7 +34,7 @@ class tblUsuarios
         try{
 
             // Sentencia INSERT
-            $consulta = "INSERT INTO ".self::TABLE_NAME." VALUES (?,?,?,?,?,?,MD5(?));";
+            $consulta = "INSERT INTO ".self::TABLE_NAME." VALUES (?,?,?,?,?,?,MD5(?),?);";
             // Preparar la sentencia
             $sentencia = DatabaseConnection::getInstance()->getDb()->prepare($consulta);
 
@@ -45,7 +46,8 @@ class tblUsuarios
                     $telefonos,
                     $direccion,
                     $correo,
-                    $clave
+                    $clave,
+                    null
                 )
             );
 
@@ -53,6 +55,51 @@ class tblUsuarios
             return false;
         }
     
+    }
+    public static function getById($numerocedula){
+        // Consulta
+        $consulta = "SELECT ".self::NUMEROCEDULA.", ".self::NOMBRES.", ".self::APELLIDOS.", ".TELEFONOS.", ".self::DIRECCION.", ".self::USUARIO.", ".self::CONTRASEÑA.", ".self::ESTADO.", ".self::CODDEPARTAMENTO.", ".self::CODPROFESION.", ".self::IMAGEN.", ".self::TIPOUSUARIO.", ".self::TITULO.
+                    " FROM ".self::TABLE_NAME.
+                    " WHERE ".self::NUMEROCEDULA." = ?";
+
+        try {
+
+
+            // Preparar sentencia
+            $comando = DatabaseConnection::getInstance()->getDb()->prepare($consulta);
+            // Ejecutar sentencia preparada
+            $comando->execute(array($numerocedula));
+            // Capturar primera fila del resultado
+            $row = $comando->fetch(PDO::FETCH_ASSOC);
+            return $row;
+            
+        } catch (PDOException $e) {
+            // Aquí puedes clasificar el error dependiendo de la excepción
+            // para presentarlo en la respuesta Json
+            return -1;
+        }
+    }
+
+    /*permite traer todo los datos del horario con respecto al codigo del funcionario*/
+    public static function horarioFuncionario($codfuncionario){
+        //consulta
+        $consulta = "SELECT * FROM tblhorarios WHERE tblhorarios.codfuncionario = ?;";
+        // Preparar sentencia
+        $comando = DatabaseConnection::getInstance()->getDb()->prepare($consulta);
+        // Ejecutar sentencia preparada
+        $comando->execute(array($codfuncionario));
+        // Capturar primera fila del resultado
+        $row = $comando->fetch(PDO::FETCH_ASSOC);
+        return $row;
+    }
+
+    /*permite mostrar los horarios disponibles que tiene el funcionario con respecto al tiempo de duracion de cada tema*/
+    public static function horariosDisponibles($fecha, $horainicial, $duracion){
+        try {
+            
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
 
