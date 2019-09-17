@@ -41,6 +41,33 @@ class tblDependencias
 
 
     /**
+     * Obtiene los campos de un funcionario con un identificador
+     * de dependencia
+     */
+    public static function getByIdFuncionario($coddependencia){
+        // Consulta
+        $consulta = "CALL sp_funcionario_dependencia(?);";
+
+        try {
+
+
+            // Preparar sentencia
+            $comando = DatabaseConnection::getInstance()->getDb()->prepare($consulta);
+            // Ejecutar sentencia preparada
+            $comando->execute(array($coddependencia));
+            // Capturar primera fila del resultado
+            $row = $comando->fetch(PDO::FETCH_ASSOC);
+            return $row;
+            
+        } catch (PDOException $e) {
+            // Aquí puedes clasificar el error dependiendo de la excepción
+            // para presentarlo en la respuesta Json
+            return -1;
+        }
+    }
+
+
+    /**
      * Insertar un nuevo dato
      *
      */
