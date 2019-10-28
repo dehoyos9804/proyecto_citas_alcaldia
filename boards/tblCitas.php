@@ -85,5 +85,54 @@ class tblCitas
     
     }
 
+    /**
+     * Actualiza un registro de la bases de datos basado
+     * en los nuevos valores relacionados con un identificador
+     */
+    public static function update($fechareal,$horarealinicial,$horarealfinal, $notificacion, $codcita){
+        // Creando consulta UPDATE
+        $consulta = "CALL sp_update_citas(?,?,?,?,?);";
+        // Preparar la sentencia
+        $comando = DatabaseConnection::getInstance()->getDb()->prepare($consulta);
+        // Relacionar y ejecutar la sentencia
+        $comando->execute(array($fechareal,$horarealinicial, $horarealfinal,$notificacion, $codcita));
+
+        return $comando;
+    }
+
+    /**
+     * Eliminar el registro con el identificador especificado
+     *
+     * @param $idCita identificador de la meta
+     * @return bool Respuesta de la eliminación
+     */
+    
+    public static function delete($idCita){
+        // Sentencia DELETE
+        $comando = "DELETE FROM tblcitas WHERE idcita = ?;";
+
+        // Preparar la sentencia
+        $sentencia = DatabaseConnection::getInstance()->getDb()->prepare($comando);
+
+        return $sentencia->execute(array($idCita));
+    }
+
+    /*Permite traer toda las citas que le pertenece a cada funcionario en un dia especifico**/
+    public static function allListaCitasFuncionario($codfuncionario, $fecha){
+        try {
+            $consulta = "CALL sp_consultar_citas_funcionarios(?,?);";
+            // Preparar sentencia
+            $comando = DatabaseConnection::getInstance()->getDb()->prepare($consulta);
+            // Ejecutar sentencia preparada
+            $comando->execute(array($codfuncionario, $fecha));
+            // Capturar primera fila del resultado
+            $row = $comando->fetchAll(PDO::FETCH_ASSOC);
+            return $row;
+
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
 }
 ?>

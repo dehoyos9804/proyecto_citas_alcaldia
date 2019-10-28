@@ -24,7 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                  $body['telefonos'],
                  $body['direccion'],
                  $body['correo'],
-                 $body['clave']
+                 $body['clave'],
+                 $body['codfuncionario']
                 );
 
     if ($retorno) {

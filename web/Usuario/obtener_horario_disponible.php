@@ -26,7 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	$duracion = $_GET[DURACION_TEMA];
 
 	//obtener de la base de datos
-	$dependencia=tblUsuarios::horarioFuncionario($idfuncionario);
+	//$dependencia=tblUsuarios::horarioFuncionario($idfuncionario);
+	$dependencia=tblUsuarios::horarioFuncionario($fecha, $idfuncionario);
+
+	
 	$existe = tblUsuarios::exiteHorario($fecha);
 	$dia_trabaja = tblUsuarios::diaTrabaja($fecha, $idfuncionario);
 

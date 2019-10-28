@@ -30,11 +30,11 @@ class tblUsuarios
      * Insertar un nuevo dato
      *
      */
-    public static function insert($idusuario,$nombres,$apellidos,$telefonos,$direccion,$correo,$clave){
+    public static function insert($idusuario,$nombres,$apellidos,$telefonos,$direccion,$correo,$clave, $codfuncionario){
         try{
 
             // Sentencia INSERT
-            $consulta = "INSERT INTO ".self::TABLE_NAME." VALUES (?,?,?,?,?,?,MD5(?),?);";
+            $consulta = "INSERT INTO ".self::TABLE_NAME." VALUES (?,?,?,?,?,?,MD5(?),?, ?);";
             // Preparar la sentencia
             $sentencia = DatabaseConnection::getInstance()->getDb()->prepare($consulta);
 
@@ -47,7 +47,8 @@ class tblUsuarios
                     $direccion,
                     $correo,
                     $clave,
-                    null
+                    'USUARIO',
+                    $codfuncionario
                 )
             );
 
@@ -59,13 +60,24 @@ class tblUsuarios
 
 
     /*permite traer todo los datos del horario con respecto al codigo del funcionario*/
-    public static function horarioFuncionario($codfuncionario){
+    /*public static function horarioFuncionario($codfuncionario){
         //consulta
         $consulta = "SELECT * FROM tblhorarios WHERE tblhorarios.codfuncionario = ?;";
         // Preparar sentencia
         $comando = DatabaseConnection::getInstance()->getDb()->prepare($consulta);
         // Ejecutar sentencia preparada
         $comando->execute(array($codfuncionario));
+        // Capturar primera fila del resultado
+        $row = $comando->fetch(PDO::FETCH_ASSOC);
+        return $row;
+    }*/
+    public static function horarioFuncionario($fecha, $codfuncionario){
+        //consulta
+        $consulta = "CALL sp_horario_funcionario(?,?)";
+        // Preparar sentencia
+        $comando = DatabaseConnection::getInstance()->getDb()->prepare($consulta);
+        // Ejecutar sentencia preparada
+        $comando->execute(array($fecha,$codfuncionario));
         // Capturar primera fila del resultado
         $row = $comando->fetch(PDO::FETCH_ASSOC);
         return $row;
@@ -132,6 +144,63 @@ class tblUsuarios
 
         } catch (PDOException $e) {
             return false;
+        }
+    }
+
+    /*Permite traer toda las citas que hizo el usuario**/
+    public static function allListaCitas($codusuario){
+        try {
+            $consulta = "CALL sp_lista_citas_usuario(?);";
+            // Preparar sentencia
+            $comando = DatabaseConnection::getInstance()->getDb()->prepare($consulta);
+            // Ejecutar sentencia preparada
+            $comando->execute(array($codusuario));
+            // Capturar primera fila del resultado
+            $row = $comando->fetchAll(PDO::FETCH_ASSOC);
+            return $row;
+
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    /*Permite traer toda las citas que hizo el usuario**/
+    public static function getCitaForId($codcita){
+        try {
+            $consulta = "CALL sp_detalle_cita(?);";
+            // Preparar sentencia
+            $comando = DatabaseConnection::getInstance()->getDb()->prepare($consulta);
+            // Ejecutar sentencia preparada
+            $comando->execute(array($codcita));
+            // Capturar primera fila del resultado
+            $row = $comando->fetch(PDO::FETCH_ASSOC);
+            return $row;
+
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+
+    /*
+    * metodo que me permite saber si un usuario existen en el sistema
+    */
+    public static function get_iniciar_sesion($usuario,$clave){
+        //consulta
+        $consulta = "CALL sp_iniciar_sesion_usuario_funcionario(?,?);";
+
+        try {
+            // Preparar sentencia
+            $comando = DatabaseConnection::getInstance()->getDb()->prepare($consulta);
+            // Ejecutar sentencia preparada
+            $comando->execute(array($usuario,$clave));
+            // Capturar primera fila del resultado
+            $row = $comando->fetch(PDO::FETCH_ASSOC);
+            return $row;
+        } catch (PDOException $e) {
+            // Aquí puedes clasificar el error dependiendo de la excepción
+            // para presentarlo en la respuesta Json
+            return -1;
         }
     }
 }
