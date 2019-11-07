@@ -79,7 +79,7 @@ class tblUsuarios
         // Ejecutar sentencia preparada
         $comando->execute(array($fecha,$codfuncionario));
         // Capturar primera fila del resultado
-        $row = $comando->fetch(PDO::FETCH_ASSOC);
+        $row = $comando->fetchAll(PDO::FETCH_ASSOC);
         return $row;
     }
 
@@ -87,6 +87,18 @@ class tblUsuarios
     public static function exiteHorario($fecha){
         //consulta
         $consulta = "SELECT sf_existen_horas(?) as existe;";
+        // Preparar sentencia
+        $comando = DatabaseConnection::getInstance()->getDb()->prepare($consulta);
+        // Ejecutar sentencia preparada
+        $comando->execute(array($fecha));
+        // Capturar primera fila del resultado
+        $row = $comando->fetch(PDO::FETCH_ASSOC);
+        return $row;
+    }
+
+    public static function exiteeventos($fecha){
+        //consulta
+        $consulta = "SELECT sf_existe_eventos(?) as isevento;";
         // Preparar sentencia
         $comando = DatabaseConnection::getInstance()->getDb()->prepare($consulta);
         // Ejecutar sentencia preparada

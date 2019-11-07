@@ -32,68 +32,84 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	
 	$existe = tblUsuarios::exiteHorario($fecha);
 	$dia_trabaja = tblUsuarios::diaTrabaja($fecha, $idfuncionario);
-
-	$horaentrada = $dependencia['horaentrada'];
-	$horafinal = $dependencia['horasalida'];
-	$sumarHora = tblUsuarios::sumarHora($fecha,$horaentrada, $duracion);
+	$isevento = tblusuarios::exiteeventos($fecha);
+	//$horaentrada = $dependencia['horaentrada'];
+	//$horafinal = $dependencia['horasalida'];
+	//$sumarHora = tblUsuarios::sumarHora($fecha,$horaentrada, $duracion);
 	
 	if($dia_trabaja['diatrabaja'] > 0){
 
 	switch ($existe['existe']) {
 		case '0'://no se han seleccionado horarios en ese dia
-			$i = 0;
-			$auxiliarhorainicial = $horaentrada;
-			$auxiliarhorafinal = $sumarHora['horasuma'];
-			$array =  array();
-			while(($auxiliarhorainicial != $horafinal)){
-				$array[$i] = array("horai"=>$auxiliarhorainicial, "horaf"=>$auxiliarhorafinal);
-				$auxiliarhorainicial = $auxiliarhorafinal;
-				$suma = tblUsuarios::sumarHora($fecha,$auxiliarhorainicial, $duracion);
-				$auxiliarhorafinal = $suma['horasuma'];
-				$i++;
-			}
-
-			if(count($array)>0){
-				$datos[ESTADO]=CODIGO_EXITO;
-				$datos[DATOS]=$array;
-				print json_encode($datos);
+			if($isevento['isevento']){
+				print("HAY EVENTOS");
 			}else{
-				json_encode(array(
-					ESTADO=>CODIGO_FALLO,
-					MENSAJE=>"No hay Horario Disponible para la fecha.."
-				));
+				$array = array();
+				$i = 0;
+				foreach ($dependencia as $key) {
+					$horaentrada= $key['horaentrada'];
+					$horafinal = $key['horasalida'];
+					$sumarHora = tblUsuarios::sumarHora($fecha,$horaentrada, $duracion);
+					//$i = 0;
+					$auxiliarhorainicial = $horaentrada;
+					$auxiliarhorafinal = $sumarHora['horasuma'];
+					//$array =  array();
+					while(($auxiliarhorainicial != $horafinal)){
+						$array[$i] = array("horai"=>$auxiliarhorainicial, "horaf"=>$auxiliarhorafinal);
+						$auxiliarhorainicial = $auxiliarhorafinal;
+						$suma = tblUsuarios::sumarHora($fecha,$auxiliarhorainicial, $duracion);
+						$auxiliarhorafinal = $suma['horasuma'];
+						$i++;
+					}
+				}
+				if(count($array)>0){
+					$datos[ESTADO]=CODIGO_EXITO;
+					$datos[DATOS]=$array;
+					print json_encode($datos);
+				}else{
+					json_encode(array(
+						ESTADO=>CODIGO_FALLO,
+						MENSAJE=>"No hay Horario Disponible para la fecha.."
+					));
+				}
 			}
 			break;
 		case '1'://ya existen horas escojidas
-				$j = 0;
-				$auxhorainicial = $horaentrada;
-				$auxhorafinal = $sumarHora['horasuma'];
 				$matriz = array();
-
+				$j = 0;
 				$h_elegidos = tblUsuarios::allHorarioFecha($fecha);//horario elegidos, estas horas ya no estan disponibles
-				
-				//genero los horarios disponibles
-				while($auxhorainicial != $horafinal){
-					foreach ($h_elegidos as $key) {
-						//$hielegida = $key['horainicial'];
-						//$hfelegida = $key['horafinal'];
-						$hielegida = $key['horareali'];
-						$hfelegida = $key['horarealf'];
+				foreach ($dependencia as $key) {
+					$horaentrada= $key['horaentrada'];
+					$horafinal = $key['horasalida'];
+					$sumarHora = tblUsuarios::sumarHora($fecha,$horaentrada, $duracion);
+							
+					$auxhorainicial = $horaentrada;
+					$auxhorafinal = $sumarHora['horasuma'];
 
-						if($auxhorainicial == $hielegida || $auxhorafinal == $hfelegida){
-							$auxhorainicial = $hfelegida;
-							$sum_new_horaf = tblUsuarios::sumarHora($fecha,$hfelegida, $duracion);
-							$auxhorafinal = $sum_new_horaf['horasuma'];
+					//genero los horarios disponibles
+					while($auxhorainicial != $horafinal){
+						foreach ($h_elegidos as $key) {
+							//$hielegida = $key['horainicial'];
+							//$hfelegida = $key['horafinal'];
+							$hielegida = $key['horareali'];
+							$hfelegida = $key['horarealf'];
+
+							if($auxhorainicial == $hielegida || $auxhorafinal == $hfelegida){
+								$auxhorainicial = $hfelegida;
+								$sum_new_horaf = tblUsuarios::sumarHora($fecha,$hfelegida, $duracion);
+								$auxhorafinal = $sum_new_horaf['horasuma'];
+							}
+						}
+
+						if($auxhorainicial != $horafinal){
+							$matriz[$j] = array("horai"=>$auxhorainicial, "horaf"=>$auxhorafinal);
+							$auxhorainicial = $auxhorafinal;
+							$sumar_add = tblUsuarios::sumarHora($fecha,$auxhorainicial, $duracion);
+							$auxhorafinal = $sumar_add['horasuma'];
+							$j++;
 						}
 					}
 
-					if($auxhorainicial != $horafinal){
-						$matriz[$j] = array("horai"=>$auxhorainicial, "horaf"=>$auxhorafinal);
-						$auxhorainicial = $auxhorafinal;
-						$sumar_add = tblUsuarios::sumarHora($fecha,$auxhorainicial, $duracion);
-						$auxhorafinal = $sumar_add['horasuma'];
-						$j++;
-					}
 				}
 
 				if(count($matriz)>0){
