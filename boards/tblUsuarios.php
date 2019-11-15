@@ -83,6 +83,18 @@ class tblUsuarios
         return $row;
     }
 
+    public static function eventosForFecha($fecha){
+        //consulta
+        $consulta = "CALL sp_eventos_for_fecha(?);";
+        // Preparar sentencia
+        $comando = DatabaseConnection::getInstance()->getDb()->prepare($consulta);
+        // Ejecutar sentencia preparada
+        $comando->execute(array($fecha));
+        // Capturar primera fila del resultado
+        $row = $comando->fetchAll(PDO::FETCH_ASSOC);
+        return $row;
+    }
+
     /*permite saber si el horario se encuentra con horas disponibles o horas ya seleccionadas*/
     public static function exiteHorario($fecha){
         //consulta

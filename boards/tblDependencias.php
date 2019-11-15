@@ -25,7 +25,7 @@ class tblDependencias
      * @return array|| bool  Arreglo con todos los gastos o false en caso de error
      */
  	public static function getAll(){
-        $consulta = "SELECT * FROM ".self::TABLE_NAME;
+        $consulta = "SELECT tbldependencias.iddependencia, tbldependencias.nombre, tbldependencias.observacion FROM tblfuncionarios INNER JOIN tbldependencias ON tbldependencias.iddependencia = tblfuncionarios.coddependencia;";
         try {
             //preparar sentencia
             $comando = DatabaseConnection::getInstance()->getDb()->prepare($consulta);
