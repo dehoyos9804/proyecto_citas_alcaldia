@@ -94,7 +94,7 @@
 		                        if(isset($error)){
                             ?>
                                     <div class="alert-icon shadow-reset wrap-alert-b">
-                                        <div class="alert alert-danger alert-mg-b alert-success-style">
+                                        <div class="alert alert-danger alert-mg-b alert-success-style4">
                                             <button type="button" class="close sucess-op" data-dismiss="alert" aria-label="Close">
                                                     <span class="icon-sc-cl" aria-hidden="true">&times;</span>
                                                 </button> 

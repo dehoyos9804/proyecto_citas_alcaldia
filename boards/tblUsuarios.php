@@ -34,7 +34,7 @@ class tblUsuarios
         try{
 
             // Sentencia INSERT
-            $consulta = "INSERT INTO ".self::TABLE_NAME." VALUES (?,?,?,?,?,?,MD5(?),?, ?);";
+            $consulta = "INSERT INTO ".self::TABLE_NAME." VALUES (?,?,?,?,?,?,SHA(?),?, ?);";
             // Preparar la sentencia
             $sentencia = DatabaseConnection::getInstance()->getDb()->prepare($consulta);
 

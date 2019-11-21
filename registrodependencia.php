@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html class="no-js" lang="es">
 
@@ -11,7 +12,7 @@
 		============================================ -->
     <link rel="shortcut icon" type="image/x-icon" href="other/img/favicon.ico">
     <!-- Google Fonts
-		============================================ -->
+		============================================ --> 
     <link href="https://fonts.googleapis.com/css?family=Play:400,700" rel="stylesheet">
     <!-- Bootstrap CSS
 		============================================ -->
@@ -84,7 +85,7 @@
                                 <li><a title="Dashboard v.1" href="registrodependencia.php"><i class="fa fa-bullseye sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Dependencias</span></a></li>
                                 <li><a title="Dashboard v.2" href="registrofuncionario.php"><i class="fa fa-circle-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Funcionarios</span></a></li>
                                 <li><a title="Dashboard v.2" href="registroevento.php"><i class="fa fa-circle-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Evento</span></a></li>
-                                
+
                             </ul>
                         </li>
                         <li class="active">
@@ -132,7 +133,7 @@
                                     <div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
                                         <div class="header-top-menu tabl-d-n">
                                             <ul class="nav navbar-nav mai-top-nav">
-                                                <li class="nav-item"><a href="#" class="nav-link">Home</a>
+                                                <li class="nav-item"><a href="index.php" class="nav-link">Home</a>
                                                 </li>
                                                 <li class="nav-item"><a href="#" class="nav-link">About</a>
                                                 </li>
@@ -152,6 +153,7 @@
                                                         </li>
                                                     </ul>
                                                 </li>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -162,21 +164,55 @@
                 </div>
             </div>
             <!-- Mobile Menu start -->
-            
-
             <!-- Mobile Menu end -->
-            
-        </div>
-        <div class="calender-area mg-tb-13">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="calender-inner">
-                            <div id='calendar'></div>
+            <!-- PAGE CONTENT WRAPPER -->
+                <div class="page-content-wrap">                
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                            
+                            <div class="panel-heading"> 
+                                    <h3 class="panel-title" align="center">Registrar Dependencias</h3>         
+                                </div>
+                            
+                            <form class="form-horizontal" id="formventas" name="formventas" action="controllers/store_registro_dependencia.php" method="POST">
+                                <div class="panel panel-warning">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="panel  push-up-20">
+                                                    <div class="panel-body panel-body-pricing">
+                                                        <h5>Nombre de Dependencia</h5>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <div class="col-md-12 col-xs-12">          
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                                                        <input type="text" name="nombre" id="nombre" class="form-control" required/>
+                                                                    </div>                        <br>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br><br><br>
+                                                        <h5>Descripcion de la Dependencia</h5>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <div class="col-md-12 col-xs-12">                                            
+                                                                    <textarea class="form-control" name="observacion" id="observacion" rows="5"></textarea>
+                                                                    <br>
+                                                                </div>
+                                                            </div> 
+                                                        </div>
+                                                        <button type="submit" class="btn btn-info pull-right">Registrar</button>   
+                                                    </div>
+                                                </div>
+                                            </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </div>
+                <!-- END PAGE CONTENT WRAPPER -->                
         </div>
         <div class="footer-copyright-area">
             <div class="container-fluid">

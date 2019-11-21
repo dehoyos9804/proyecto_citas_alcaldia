@@ -59,13 +59,18 @@
     <!-- modernizr JS
 		============================================ -->
     <script src="other/js/vendor/modernizr-2.8.3.min.js"></script>
+
+    <?php
+            require 'boards/tblAdministradores.php';
+
+            $funcionarios = tblAdministradores::getAllFuncionario();
+           
+    ?>
+
 </head>
 
 <body>
-    <!--[if lt IE 8]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-
+    
     <div class="left-sidebar-pro">
         <nav id="sidebar" class="">
             <div class="sidebar-header">
@@ -84,7 +89,7 @@
                                 <li><a title="Dashboard v.1" href="registrodependencia.php"><i class="fa fa-bullseye sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Dependencias</span></a></li>
                                 <li><a title="Dashboard v.2" href="registrofuncionario.php"><i class="fa fa-circle-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Funcionarios</span></a></li>
                                 <li><a title="Dashboard v.2" href="registroevento.php"><i class="fa fa-circle-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Evento</span></a></li>
-                                
+
                             </ul>
                         </li>
                         <li class="active">
@@ -95,7 +100,7 @@
                             <ul class="submenu-angle" aria-expanded="false">
                                 <li><a title="Inbox" href="listausuarios.php"><i class="fa fa-inbox sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Usuarios</span></a></li>
                                 <li><a title="View Mail" href="listadependencias.php"><i class="fa fa-television sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Citas</span></a></li>
-                                <li><a title="View Mail" href="listafuncionarios2.php"><i class="fa fa-television sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Funcionarios</span></a></li>
+                                <li><a title="View Mail" href="listafuncionarios.php"><i class="fa fa-television sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Funcionarios</span></a></li>
                                 
                             </ul>
                         </li>
@@ -132,7 +137,7 @@
                                     <div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
                                         <div class="header-top-menu tabl-d-n">
                                             <ul class="nav navbar-nav mai-top-nav">
-                                                <li class="nav-item"><a href="#" class="nav-link">Home</a>
+                                                <li class="nav-item"><a href="index.php" class="nav-link">Home</a>
                                                 </li>
                                                 <li class="nav-item"><a href="#" class="nav-link">About</a>
                                                 </li>
@@ -152,6 +157,7 @@
                                                         </li>
                                                     </ul>
                                                 </li>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -162,21 +168,56 @@
                 </div>
             </div>
             <!-- Mobile Menu start -->
-            
-
             <!-- Mobile Menu end -->
-            
-        </div>
-        <div class="calender-area mg-tb-13">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="calender-inner">
-                            <div id='calendar'></div>
-                        </div>
+            <!-- PAGE CONTENT WRAPPER -->
+               
+                <!-- END PAGE TITLE -->                
+               
+                <!-- PAGE CONTENT WRAPPER -->
+                <div align="center" class="page-content-wrap">                
+
+                    <div class="row">                                        
+                        <div align="center" class="col-md-12">
+
+                            <!-- CONTACTS WITH CONTROLS -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Lista De Funcionarios</h3>         
+                                </div>
+                                    <table class="table table-condensed">
+                                        <tbody>
+                                        <?php
+                                        foreach ($funcionarios as $key) {
+                                        ?>                   
+                                            <tr>          
+                                                <td>
+                                                    <a href="detallefuncionario.php?numerocedula=<?php echo $key['numerocedula'];?>" class="list-group-item">
+                                                        
+                                                        <span class="contacts-title"><h5><strong><?php echo $key['nombres']?> <?php echo $key['apellidos']?></strong></h5></span>
+                                                        <p><?php echo $key['correo']?></p>
+                                                    </a>
+                                                </td>  
+                                                
+                                            <tr>  
+                                        <?php
+                                        }
+                                        ?> 
+                                        <tbody>  
+                                    </table>                            
+                                
+                            </div>
+                            <!-- END CONTACTS WITH CONTROLS -->
+
+                        </div>                   
                     </div>
                 </div>
-            </div>
+                <!-- END PAGE CONTENT WRAPPER -->                
+            </div>    
+            <!-- END PAGE CONTENT -->
+        </div>
+
+
+                <!-- END PAGE CONTENT WRAPPER -->                
         </div>
         <div class="footer-copyright-area">
             <div class="container-fluid">

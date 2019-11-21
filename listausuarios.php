@@ -59,13 +59,18 @@
     <!-- modernizr JS
 		============================================ -->
     <script src="other/js/vendor/modernizr-2.8.3.min.js"></script>
+
+    <?php
+            require 'boards/tblAdministradores.php';
+
+            $usuarios = tblAdministradores::getAllUsuarios();
+           
+    ?>
+
 </head>
 
 <body>
-    <!--[if lt IE 8]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-
+    
     <div class="left-sidebar-pro">
         <nav id="sidebar" class="">
             <div class="sidebar-header">
@@ -84,9 +89,9 @@
                                 <li><a title="Dashboard v.1" href="registrodependencia.php"><i class="fa fa-bullseye sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Dependencias</span></a></li>
                                 <li><a title="Dashboard v.2" href="registrofuncionario.php"><i class="fa fa-circle-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Funcionarios</span></a></li>
                                 <li><a title="Dashboard v.2" href="registroevento.php"><i class="fa fa-circle-o sub-icon-mg" aria-hidden="true"></i> <span class="mini-sub-pro">Evento</span></a></li>
-                                
+
                             </ul>
-                        </li>
+                        </li> 
                         <li class="active">
                             <a class="has-arrow" href="mailbox.html">
                                 <i class="fa big-icon fa-home icon-wrap"></i> 
@@ -132,7 +137,7 @@
                                     <div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
                                         <div class="header-top-menu tabl-d-n">
                                             <ul class="nav navbar-nav mai-top-nav">
-                                                <li class="nav-item"><a href="#" class="nav-link">Home</a>
+                                                <li class="nav-item"><a href="index.php" class="nav-link">Home</a>
                                                 </li>
                                                 <li class="nav-item"><a href="#" class="nav-link">About</a>
                                                 </li>
@@ -152,6 +157,7 @@
                                                         </li>
                                                     </ul>
                                                 </li>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -162,21 +168,53 @@
                 </div>
             </div>
             <!-- Mobile Menu start -->
-            
-
             <!-- Mobile Menu end -->
-            
-        </div>
-        <div class="calender-area mg-tb-13">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="calender-inner">
-                            <div id='calendar'></div>
+            <!-- PAGE CONTENT WRAPPER -->
+                <div class="page-content-wrap">                
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- CONTACTS WITH CONTROLS -->
+                            <div class="panel panel-default">
+                            
+                            <div class="panel-heading"> 
+                                    <h3 class="panel-title" align="center">Lista De Usuarios Registradas</h3>         
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table datatable table-bordered table-striped table-actions">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center" width="150">Numero Cedula</th>
+                                                    <th class="text-center">Nombres Y Apellidos</th>
+                                                    <th class="text-center" width="110">Telefono</th>
+                                                    <th class="text-center" width="160">Dirección</th>
+                                                    <th class="text-center" width="200">Correo</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                foreach ($usuarios as $key) {
+                                                ?>
+                                                <tr id="trow_1">
+                                                    <td class="text-center"><?php echo $key['numerocedula'];?></td>
+                                                    <td class="text-center"><?php echo $key['nombres'];?> <?php echo $key['apellidos'];?></td>
+                                                    <td><?php echo $key['telefono'];?></td>
+                                                    <td><?php echo $key['direccion'];?></td>
+                                                    <td><?php echo $key['correo'];?></td>
+                                                </tr> 
+                                                <?php
+                                                }
+                                                ?>
+                                            </tbody>    
+                                        </table>    
+                                    </div>                          
+                                </div>
+                            </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                <!-- END PAGE CONTENT WRAPPER -->                
         </div>
         <div class="footer-copyright-area">
             <div class="container-fluid">
